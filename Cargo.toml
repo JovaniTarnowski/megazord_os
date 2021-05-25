@@ -8,11 +8,16 @@ edition = "2018"
 
 [dependencies]
 bootloader = "0.9.8"
-# the profile used for `cargo build`
-[profile.dev]
-panic = "abort" # disable stack unwinding on panic
+volatile = "0.2.6"
+spin = "0.5.2"
+x86_64 = "0.14.2"
 
-# the profile used for `cargo build --release`
-[profile.release]
-panic = "abort" # disable stack unwinding on panic
+[dependencies.lazy_static]
+version = "1.0"
+features = ["spin_no_std"]
+
+[package.metadata.bootimage]
+test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04"]
+test-success-exit-code = 33         # (0x10 << 1) | 1
+
 
