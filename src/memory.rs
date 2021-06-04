@@ -1,10 +1,10 @@
+use bootloader::bootinfo::MemoryMap;
+use bootloader::bootinfo::MemoryRegionType;
 use x86_64::{
     PhysAddr,VirtAddr,
     structures::paging::{Page, PhysFrame, Mapper, Size4KiB, FrameAllocator, OffsetPageTable, PageTable}
 };
 
-use bootloader::bootinfo::MemoryMap;
-use bootloader::bootinfo::MemoryRegionType;
 
 /// Initialize a new OffsetPageTable.
 ///

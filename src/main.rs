@@ -7,13 +7,31 @@
 use megazord_os::println;
 use core::panic::PanicInfo;
 use bootloader::{BootInfo, entry_point};
-
-
-entry_point!(kernel_main);
+use alloc::{boxed::Box, vec, vec::Vec, rc::Rc};
 
 extern crate alloc;
 
-use alloc::{boxed::Box, vec, vec::Vec, rc::Rc};
+
+/// This function is called on panic.
+#[cfg(not(test))]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
+    megazord_os::hlt_loop();
+}
+
+#[cfg(test)]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    megazord_os::test_panic_handler(info)
+}
+
+#[test_case]
+fn trivial_assertion() {
+    assert_eq!(1, 1);
+}
+
+entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use megazord_os::memory;
@@ -57,23 +75,4 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     println!("It did not crash!");
     megazord_os::hlt_loop();
-}
-
-/// This function is called on panic.
-#[cfg(not(test))]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    megazord_os::hlt_loop();
-}
-
-#[cfg(test)]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    megazord_os::test_panic_handler(info)
-}
-
-#[test_case]
-fn trivial_assertion() {
-    assert_eq!(1, 1);
 }
