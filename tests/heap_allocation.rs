@@ -4,13 +4,13 @@
 #![test_runner(megazord_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-extern crate alloc;
-
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use alloc::boxed::Box;
 use alloc::vec::Vec;
 use megazord_os::allocator::HEAP_SIZE;
+
+extern crate alloc;
 
 #[test_case]
 fn many_boxes() {
@@ -41,6 +41,11 @@ fn simple_allocation() {
     assert_eq!(*heap_value_2, 13);
 }
 
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    megazord_os::test_panic_handler(info)
+}
+
 entry_point!(main);
 
 fn main(boot_info: &'static BootInfo) -> ! {
@@ -61,8 +66,4 @@ fn main(boot_info: &'static BootInfo) -> ! {
     loop {}
 }
 
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    megazord_os::test_panic_handler(info)
-}
 

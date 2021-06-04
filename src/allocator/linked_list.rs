@@ -1,13 +1,13 @@
+use alloc::alloc::{GlobalAlloc, Layout};
+use core::mem;
+use core::ptr;
+use super::Locked;
+use super::align_up;
+
 struct ListNode {
     size: usize,
     next: Option<&'static mut ListNode>,
 }
-
-use super::align_up;
-use core::mem;
-use super::Locked;
-use alloc::alloc::{GlobalAlloc, Layout};
-use core::ptr;
 
 impl ListNode {
     const fn new(size: usize) -> Self {
