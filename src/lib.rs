@@ -7,21 +7,20 @@
 #![feature(alloc_error_handler)]
 #![feature(const_mut_refs)]
 
-
 use core::panic::PanicInfo;
 
 #[cfg(test)]
-use bootloader::{BootInfo, entry_point};
+use bootloader::{entry_point, BootInfo};
 
 extern crate alloc;
 
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
-pub mod serial;
-pub mod vga_buffer;
 pub mod memory;
-pub mod allocator;
+pub mod serial;
 pub mod task;
+pub mod vga_buffer;
 
 #[cfg(test)]
 entry_point!(test_kernel_main);
@@ -37,8 +36,8 @@ pub trait Testable {
 }
 
 impl<T> Testable for T
-    where
-        T: Fn(),
+where
+    T: Fn(),
 {
     fn run(&self) {
         serial_print!("{}...\t", core::any::type_name::<T>());

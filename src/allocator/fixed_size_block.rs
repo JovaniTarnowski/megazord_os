@@ -1,8 +1,8 @@
+use super::Locked;
+use alloc::alloc::GlobalAlloc;
 use alloc::alloc::Layout;
 use core::ptr;
-use alloc::alloc::GlobalAlloc;
 use core::{mem, ptr::NonNull};
-use super::Locked;
 
 unsafe impl GlobalAlloc for Locked<FixedSizeBlockAllocator> {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
@@ -19,8 +19,7 @@ unsafe impl GlobalAlloc for Locked<FixedSizeBlockAllocator> {
                         let block_size = BLOCK_SIZES[index];
                         // only works if all block sizes are a power of 2
                         let block_align = block_size;
-                        let layout = Layout::from_size_align(block_size, block_align)
-                            .unwrap();
+                        let layout = Layout::from_size_align(block_size, block_align).unwrap();
                         allocator.fallback_alloc(layout)
                     }
                 }
