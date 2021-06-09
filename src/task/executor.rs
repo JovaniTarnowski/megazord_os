@@ -17,4 +17,12 @@ impl Executor {
             waker_cache: BTreeMap::new(),
         }
     }
+
+    pub fn spawn(&mut self, task: Task) {
+        let task_id = task.id;
+        if self.tasks.insert(task.id, task).is_some() {
+            panic!("task with same ID already in tasks");
+        }
+        self.task_queue.push(task_id).expect("queue full");
+    }
 }

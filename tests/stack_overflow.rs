@@ -4,9 +4,9 @@
 
 use core::panic::PanicInfo;
 use lazy_static::lazy_static;
-use x86_64::structures::idt::InterruptDescriptorTable;
 use megazord_os::serial_print;
-use megazord_os::{exit_qemu, QemuExitCode, serial_println};
+use megazord_os::{exit_qemu, serial_println, QemuExitCode};
+use x86_64::structures::idt::InterruptDescriptorTable;
 use x86_64::structures::idt::InterruptStackFrame;
 
 lazy_static! {
